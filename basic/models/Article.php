@@ -2,6 +2,7 @@
 
 namespace app\models;
 use yii\helpers\ArrayHelper;
+use yii\data\Pagination;
 
 use Yii;
 
@@ -117,4 +118,30 @@ public function clearCurrentTags()
 {
     ArticleTag::deleteAll(['article_id'=>$this->id]);
 }
+public function getDate()
+{
+    return Yii::$app->formatter->asDate($this->date);
+}
+public static function getAll()
+{
+    $query = Article::find();
+    $count = $query->count();
+    $pagination = new Pagination(['totalCount' =>$count,'pageSize'=>10]);
+    $articles = $query->offset($pagination->offset)
+        ->limit($pagination->limit)
+        ->all();
+
+        $data['articles']=$articles;
+        $data['pagination']=$pagination;
+        return $data;
+}
+public static function getPopular()
+{
+    return  Article::find()->orderBy('viewed desc')->limit(3)->all();
+}
+public static function getRecent()
+{
+    return Article::find()->orderBy('date desc')->limit(4)->all();
+}
+
 }

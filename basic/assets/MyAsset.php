@@ -28,7 +28,7 @@ class MyAsset extends AssetBundle
         'blog/css/style.css',
     ];
     public $js = [
-        'blog/js/jquery-3.3.1.min.js',
+        // 'blog/js/jquery-3.3.1.min.js',
         'blog/js/bootstrap.min.js',
         'blog/js/jquery.slicknav.js,',
         'blog/js/owl.carousel.min.js',
