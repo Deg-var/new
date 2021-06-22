@@ -1,4 +1,8 @@
-<?php use yii\helpers\Url;?>
+<?php
+
+use yii\base\Widget;
+use yii\helpers\Url;
+use yii\widgets\ActiveForm;?>
 <section class="categories categories-grid spad container"><div class="row"><section class="single-post spad col-8">
         <div class="single-post__hero set-bg" data-setbg="<?= $article->getImage();?>"></div>
         <div class="container">
@@ -46,67 +50,34 @@
                     </div>
                     <div class="single-post__comment">
                         <div class="widget__title">
-                            <h4>03 Comment</h4>
+                            <h4> Comment</h4>
                         </div>
+<?php if(!empty($comments)):?>
+    <?php foreach($comments as $comment):?>
                         <div class="single-post__comment__item">
                             <div class="single-post__comment__item__pic">
-                                <img src="/blog/img/categories/single-post/comment/comment-1.jpg" alt="">
+                                <img src="<?= $comment->user->image?>" alt="">
                             </div>
                             <div class="single-post__comment__item__text">
-                                <h5>Brandon Kelley</h5>
-                                <span>15 Aug 2017</span>
-                                <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur,
-                                    adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore
-                                    magnam.</p>
+                                <h5><?= $comment->user->name?></h5>
+                                <span><?= $comment->getDate()?></span>
+                                <p><?= $comment->text;?></p>
                                 <ul>
                                     <li><a href="#"><i class="fa fa-heart-o"></i></a></li>
                                     <li><a href="#"><i class="fa fa-share-square-o"></i></a></li>
                                 </ul>
                             </div>
                         </div>
-                        <div class="single-post__comment__item single-post__comment__item--reply">
-                            <div class="single-post__comment__item__pic">
-                                <img src="/blog/img/categories/single-post/comment/comment-2.jpg" alt="">
-                            </div>
-                            <div class="single-post__comment__item__text">
-                                <h5>Brandon Kelley</h5>
-                                <span>15 Aug 2017</span>
-                                <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur,
-                                    adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore
-                                    magnam.</p>
-                                <ul>
-                                    <li><a href="#"><i class="fa fa-heart-o"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-share-square-o"></i></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="single-post__comment__item">
-                            <div class="single-post__comment__item__pic">
-                                <img src="/blog/img/categories/single-post/comment/comment-3.jpg" alt="">
-                            </div>
-                            <div class="single-post__comment__item__text">
-                                <h5>Brandon Kelley</h5>
-                                <span>15 Aug 2017</span>
-                                <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur,
-                                    adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore
-                                    magnam.</p>
-                                <ul>
-                                    <li><a href="#"><i class="fa fa-heart-o"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-share-square-o"></i></a></li>
-                                </ul>
-                            </div>
-                        </div>
+<?php endforeach;?>
+<?php endif;?>
                     </div>
-                    <div class="single-post__leave__comment">
-                        <div class="widget__title">
-                            <h4>Оставьте коментарий</h4>
-                        </div>
-                        <form action="#">
-                            
-                            <textarea placeholder="Ваш коментарий"></textarea>
-                            <button type="submit" class="site-btn">Submit</button>
-                        </form>
-                    </div>
+                    <?= $this->render('/partials/comment',[
+                        'article'=>$article,
+                        'comments'=>$comments,
+                        'commentForm'=>$commentForm,
+                        
+                    ]);
+                    echo date('Y-m-d H:i:s')?>
                 </div>
                 
             </div>

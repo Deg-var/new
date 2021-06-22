@@ -46,18 +46,11 @@ public function actionLogin()
         $model= new SignupForm();
         if(Yii::$app->request->isPost)
         { 
-            $model->load(Yii::$app->requst->post());
+            $model->load(Yii::$app->request->post());
             if($model->signup())
             {return $this->redirect(['auth/login']);}
         }
         return $this->render('signup',['model'=>$model]);
     }
-public function actionLoginVK($uid, $first_name,$photo)
-{
-            $user=new User();
-            if($user->saveFromVk($uid,$first_name,$photo))
-            {
-                return $this->redirect(['site/index']);
-            }
-}
+
 }

@@ -10,48 +10,59 @@ use yii\bootstrap\ActiveForm;
 $this->title = 'Login';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-login">
-    <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>Please fill out the following fields to login:</p>
 
-    <?php $form = ActiveForm::begin([
+<!-- Sign In Section Begin -->
+    <div class="signin">
+        <div class="signin__warp">
+            <div class="signin__content">
+                <div class="signin__logo">
+                    <a href="#"><img src="img/siign-in-logo.png" alt=""></a>
+                </div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt labore dolore
+                    magna aliqua viverra.</p>
+                <div class="signin__form">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link"  href="/auth/signup">
+                                Sign up
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/auth/login">
+                                Sign in
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                            <div class="signin__form__text">
+                                <div class="divide">or</div>
+                                <?php $form = ActiveForm::begin([
         'id' => 'login-form',
-        'layout' => 'horizontal',
+        
         'fieldConfig' => [
-            'template' => "{label}\n<div class=\"col-lg-3\">{input}</div>\n<div class=\"col-lg-8\">{error}</div>",
-            'labelOptions' => ['class' => 'col-lg-1 control-label'],
+            'template' => "{label}\n<div>{input}</div>\n<div>{error}</div>",
+            
         ],
     ]); ?>
 
-        <?= $form->field($model, 'email')->textInput(['autofocus' => true]) ?>
+        <?= $form->field($model, 'name')->textInput(['autofocus' => true]) ?>
+
+        
 
         <?= $form->field($model, 'password')->passwordInput() ?>
 
-        <?= $form->field($model, 'rememberMe')->checkbox([
-            'template' => "<div class=\"col-lg-offset-1 col-lg-3\">{input} {label}</div>\n<div class=\"col-lg-8\">{error}</div>",
-        ]) ?>
-
-        <div class="form-group">
-            <div class="col-lg-offset-1 col-lg-11">
-                <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+                <?= Html::submitButton('Login', ['class' => 'site-btn', 'name' => 'login-button']) ?>
+           
+    <?php ActiveForm::end(); ?>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
             </div>
         </div>
-
-    <?php ActiveForm::end(); ?>
-
-    <div class="col-lg-offset-1" style="color:#999;">
-        You may login with <strong>admin/admin</strong> or <strong>demo/demo</strong>.<br>
-        To modify the username/password, please check out the code <code>app\models\User::$users</code>.
-        <script type="text/javascript" src="https://vk.com/js/api/openapi.js?169"></script>
-<script type="text/javascript">
-  VK.init({apiId: 7882395});
-</script>
-
-<!-- VK Widget -->
-<div id="vk_auth"></div>
-<script type="text/javascript">
-  VK.Widgets.Auth("vk_auth", {"authUrl":"/auth/login-vk"});
-</script>
     </div>
-</div>
+    <!-- Sign In Section End -->

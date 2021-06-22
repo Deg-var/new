@@ -14,7 +14,7 @@ use app\models\User;
  */
 class LoginForm extends Model
 {
-    public $email;
+    public $name;
     public $password;
     public $rememberMe = true;
 
@@ -28,8 +28,8 @@ class LoginForm extends Model
     {
         return [
             // email and password are both required
-            [['email', 'password'], 'required'],
-            [['email'],'email'],
+            [['name', 'password'], 'required'],
+            
             // rememberMe must be a boolean value
             ['rememberMe', 'boolean'],
             // password is validated by validatePassword()
@@ -75,7 +75,7 @@ class LoginForm extends Model
     public function getUser()
     {
         if ($this->_user === false) {
-            $this->_user = User::findByEmail($this->email);
+            $this->_user = User::findByName($this->name);
         }
 
         return $this->_user;

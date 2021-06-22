@@ -133,7 +133,7 @@ MyAsset::register($this);
                         <li><h5><a href="<?= Url::toRoute(['auth/login'])?>" style="color:black;">LOGIN</a></h5></li>
                         <li><h5><a href="<?= Url::toRoute(['auth/signup'])?>" style="color:black;">REGISTER</a></h5></li>
                         <?php else:?>
-                            <li><h5><a href="<?= Url::toRoute(['auth/logout'])?>"  style="color:black;"><?= 'LOGOUT (' . Yii::$app->user->identity->name . ')'?></a></h5></li>
+                            <li><h5><a href="<?= Url::toRoute(['auth/logout'])?>"  style="color:black;"><?= 'LOGOUT (' . Yii::$app->user->identity->email . ')'?></a></h5></li>
                         <?php endif;?>
                         </ul>
                     </div>

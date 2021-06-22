@@ -22,9 +22,8 @@ use yii\helpers\Url;
                     <div class="categories__item set-bg" data-setbg="<?= $article->getImage();?>">
                         <div class="categories__hover__text">
                             <h5><?= $article->title; ?></h5>
-                            <p><?= $article->category->title; ?></p><br>
-                        
-                            <p><?= $article->description;?> <?= $article->getDate() ?> <?= (int) $article->viewed ?></p>
+                            <p><?= $article->category_id; ?></p><br>
+                            <p><?= $article->description;?> <?= $article->setDate() ?> <?= (int) $article->viewed ?></p>
                         </div>
                     </div>
                 </div></a>

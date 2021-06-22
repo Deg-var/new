@@ -85,9 +85,6 @@ public function getCategory()
 {
     return $this->hasOne(Category::className(), ['id' => 'category_id']);
 }
-public function getFoo(){
-    return 'haha';
-}
 public function saveCategory($category_id)
 {
     $category = Category::findOne($category_id);
@@ -143,5 +140,17 @@ public static function getRecent()
 {
     return Article::find()->orderBy('date desc')->limit(4)->all();
 }
-
+public function saveArticle()
+{
+    $this->user_id=Yii::$app->user->id;
+    return $this->save();
+}
+public function getComments()
+{
+    return $this->hasMany(Comment::className(),['article_id'=>'id']);
+}
+public function getArticleComments()
+{
+    return $this->getComments()->where(['status'=>1])->all();
+}
 }

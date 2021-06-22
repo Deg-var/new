@@ -11,7 +11,8 @@ use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\Article;
 use app\models\Category;
-use yii\data\Pagination;
+use app\models\Comment;
+use app\models\CommentForm;
 
 class SiteController extends Controller
 {
@@ -119,11 +120,16 @@ class SiteController extends Controller
         $popular= Article::getPopular();
         $recent =Article::getRecent();
         $categories=Category::getAll();
+        $comments=$article->getArticleComments();
+        $commentForm = new CommentForm();
                 
-        return $this->render('single',['article'=>$article,
-        'popular'=>$popular,
+        return $this->render('single',[
+            'article'=>$article,
+            'popular'=>$popular,
             'recent'=>$recent,
-            'categories'=>$categories,]);
+            'categories'=>$categories,
+            'comments'=>$comments,
+            'commentForm'=>$commentForm]);
     }
     public function actionCategory($id)
     {
@@ -141,5 +147,22 @@ class SiteController extends Controller
             'recent'=>$recent,
             'categories'=>$categories,
        ]);
+    }
+    public function getComment()
+    {
+        return $this->hasMany(Comment::classname(),['article3_id'=>'id']);
+    }
+    public function actionComment($id)
+    {
+        $model=new CommentForm();
+        if (Yii::$app->request)
+        {
+            $model->load(Yii::$app->request->post());
+            if($model->saveComment($id))
+            {
+                Yii::$app->getSession()->setFlash('comment','otpravleno');
+                return $this->redirect(['site/view','id'=>$id]);
+            }
+        }
     }
 }
