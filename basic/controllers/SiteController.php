@@ -13,6 +13,8 @@ use app\models\Article;
 use app\models\Category;
 use app\models\Comment;
 use app\models\CommentForm;
+use app\models\Tag;
+
 
 class SiteController extends Controller
 {
@@ -24,19 +26,24 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout'],
+                
+                'only' => ['login', 'logout', 'signup','new'],
                 'rules' => [
                     [
-                        'actions' => ['logout'],
+                        'allow' => false,
+                        'actions' => ['new'],
+                        'roles' => ['?'],
+                        'matchCallback'=> function($rule,$action)
+                        {
+                        $this->redirect(['site/404']);
+                        },
+                    ],
+                    [
                         'allow' => true,
+                        'actions' => ['logout','new'],
                         'roles' => ['@'],
                     ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
+                    
                 ],
             ],
         ];
@@ -70,6 +77,7 @@ class SiteController extends Controller
         $popular= Article::getPopular();
         $recent =Article::getRecent();
         $categories=Category::getAll();
+        $tags=Tag::getAll();
 
     return $this->render('index', [
          'articles' => $data['articles'],
@@ -77,6 +85,7 @@ class SiteController extends Controller
          'popular'=>$popular,
          'recent'=>$recent,
          'categories'=>$categories,
+         'tags'=>$tags,
     ]);
     }
 
@@ -114,6 +123,31 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+    
+    public function actionArticleCreate()
+    {
+        return $this->render('articleCreate');
+    }
+    public function actionCategories()
+    {
+        
+        $popular= Article::getPopular();
+        $recent =Article::getRecent();
+        $categories=Category::getAll();
+        
+        $commentForm = new CommentForm();
+        
+        $tags=Tag::getAll();
+                
+        return $this->render('categories',[
+            
+            'popular'=>$popular,
+            'recent'=>$recent,
+            'categories'=>$categories,
+            
+            'commentForm'=>$commentForm,
+            'tags'=>$tags,]);
+    }
     public function actionView($id)
     {
         $article= Article::findOne($id);
@@ -122,6 +156,8 @@ class SiteController extends Controller
         $categories=Category::getAll();
         $comments=$article->getArticleComments();
         $commentForm = new CommentForm();
+        $article->viewedCounter();
+        $tags=Tag::getAll();
                 
         return $this->render('single',[
             'article'=>$article,
@@ -129,14 +165,33 @@ class SiteController extends Controller
             'recent'=>$recent,
             'categories'=>$categories,
             'comments'=>$comments,
-            'commentForm'=>$commentForm]);
+            'commentForm'=>$commentForm,
+            'tags'=>$tags,
+        ]);
+    }
+    public function actionTags()
+    {
+        $popular= Article::getPopular();
+        $recent =Article::getRecent();
+        $categories=Category::getAll();
+        $commentForm = new CommentForm();
+        $tags=Tag::getAll();
+                
+        return $this->render('tags',[
+            'popular'=>$popular,
+            'recent'=>$recent,
+            'categories'=>$categories,
+            'commentForm'=>$commentForm,
+            'tags'=>$tags,]);
     }
     public function actionCategory($id)
     {
+        $category= Category::findOne($id);
         $data = Category::getArticlesByCategory($id);
         $popular= Article::getPopular();
         $recent =Article::getRecent();
         $categories=Category::getAll();
+        $tags=Tag::getAll();
     
 
 
@@ -146,6 +201,29 @@ class SiteController extends Controller
             'popular'=>$popular,
             'recent'=>$recent,
             'categories'=>$categories,
+            'tags'=>$tags,
+            'category'=>$category,
+       ]);
+    }
+    public function actionTag($id)
+    {
+        $tag= Tag::findOne($id);
+        $data = Category::getArticlesByCategory($id);
+        $popular= Article::getPopular();
+        $recent =Article::getRecent();
+        $categories=Category::getAll();
+        $tags=Tag::getAll();
+    
+
+
+        return $this->render('tag', [
+            'articles' => $data['articles'],
+            'pagination' => $data['pagination'],
+            'popular'=>$popular,
+            'recent'=>$recent,
+            'categories'=>$categories,
+            'tags'=>$tags,
+            'tag'=>$tag,
        ]);
     }
     public function getComment()
@@ -164,5 +242,17 @@ class SiteController extends Controller
                 return $this->redirect(['site/view','id'=>$id]);
             }
         }
+    }
+    public function actionNew()
+    {
+        $model = new Article();
+
+        if ($model->load(Yii::$app->request->post()) && $model->saveArticle()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }else{
+
+        return $this->render('new', [
+            'model' => $model,
+        ]);} 
     }
 }

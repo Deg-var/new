@@ -3308,3 +3308,16 @@ ol {
         line-height: 100px;
     }
 }
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+    color: rgb(78, 78, 78);
+}
+
+.sidebarm {
+    font-size: 15px;
+}

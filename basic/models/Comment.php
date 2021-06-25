@@ -97,4 +97,8 @@ public function disallow()
     $this->status=self::STATUS_DISALLOW;
     return $this->save(false);
 }
+public function getCommentCount()
+{
+    return $this->getArticleComments()->count();
+}
 }

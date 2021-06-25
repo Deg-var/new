@@ -23,7 +23,8 @@ use yii\helpers\Url;
                         <div class="categories__hover__text">
                             <h5><?= $article->title; ?></h5>
                             <p><?= $article->category_id; ?></p><br>
-                            <p><?= $article->description;?> <?= $article->setDate() ?> <?= (int) $article->viewed ?></p>
+                            <p><?= $article->description;?> <?= $article->getDate() ?> </p>
+                            <p>Просмотры: <?= (int) $article->viewed ?></p>
                         </div>
                     </div>
                 </div></a>
@@ -31,12 +32,14 @@ use yii\helpers\Url;
             </div><div class="row justify-content-center">
                 <?php echo LinkPager::widget([
     'pagination' => $pagination,
-]);?></div>
+]); ?></div><?php ;?>
         </div>
                     </div>
-                    <?= $this->render('/partials/sidebar',['popular'=>$popular,
+                    <?= $this->render('/partials/sidebar',[
+            'popular'=>$popular,
             'recent'=>$recent,
-            'categories'=>$categories,])?>
+            'categories'=>$categories,
+            'tags'=>$tags,])?>
              </div>
     </section>
     <!-- Categories Section End -->

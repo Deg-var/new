@@ -13,7 +13,7 @@ class SignupForm extends Model
             [['name','email','password'],'required'],
             [['name'],'string'],
             [['email'],'string'],
-            [['email'],'unique','targetClass'=>'app\models\User','targetAttribute'=>'email ']
+            [['email'],'unique','targetClass'=>'app\models\User','targetAttribute'=>'email']
         ];
     }
     public function signup()

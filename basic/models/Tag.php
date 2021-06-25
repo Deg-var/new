@@ -42,15 +42,17 @@ class Tag extends \yii\db\ActiveRecord
             'title' => 'Title',
         ];
     }
-
-    /**
-     * Gets query for [[ArticleTags]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
     public function getArticles()
     {
-        return $this->hasMany(Article::className(), ['id' => 'article_id'])
-            ->viaTable('article_tag', ['tag_id' => 'id']);
+        return $this->hasMany(Article::className(), ['category_id' => 'id']);
     }
+    public function getArticlesCount()
+    {
+        return $this->getArticles()->count();
+    }
+    public static function getAll()
+    {
+        return Tag::find()->all();
+    }
+    
 }

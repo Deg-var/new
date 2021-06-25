@@ -27,7 +27,9 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return 'user';
     }
-
+    const ROLE_USER = 1;
+    const ROLE_ADMIN = 5;
+    
     /**
      * {@inheritdoc}
      */
@@ -87,9 +89,9 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return $this->authKey === $authKey;
     }
-    public static function findByName($name)
+    public static function findByEmail($email)
     {
-        return User::find()->where(['name'=>$name])->one();
+        return User::find()->where(['email'=>$email])->one();
     
     }
     public function validatePassword($password)
@@ -116,5 +118,34 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function getImage()
     {
         
-        return $this->photo;}
+        return $this->photo;
+    }
+    public static function roles()
+{
+    return [
+        self::ROLE_USER => Yii::t('app', 'User'),
+        self::ROLE_ADMIN => Yii::t('app', 'Admin'),
+    ];
+}
+
+/**
+ * Название роли
+ * @param int $id
+ * @return mixed|null
+ */
+public function getRoleName(int $id)
+{
+    $list = self::roles();
+    return $list[$id] ?? null;
+}
+
+public function isAdmin()
+{
+    return ($this->role == self::ROLE_ADMIN);
+}
+
+public function isUser()
+{
+    return ($this->role == self::ROLE_USER);
+}
 }

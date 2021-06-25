@@ -1,8 +1,11 @@
 <?php
 
+use app\models\Article;
 use yii\base\Widget;
 use yii\helpers\Url;
-use yii\widgets\ActiveForm;?>
+use yii\widgets\ActiveForm;
+use app\models\Comment;
+?>
 <section class="categories categories-grid spad container"><div class="row"><section class="single-post spad col-8">
         <div class="single-post__hero set-bg" data-setbg="<?= $article->getImage();?>"></div>
         <div class="container">
@@ -14,15 +17,13 @@ use yii\widgets\ActiveForm;?>
                         </div>
                         <div class="single-post__title__text">
                             <ul class="label">
-                                <li><a href="<?= Url::toRoute(['site/category','id'=>$article->category->id])?>">
-                                <?= $article->category->title;?></li></a>
+                                <li><a href="<?= Url::toRoute(['site/category','id'=>$article->category_id])?>">
+                                <?= $article->category_id;?>321321</li></a>
                                 
                             </ul>
                             <h4><?= $article->title;?></h4>
                             <ul class="widget">
-                                <li>by Admin</li>
-                                <li>3 min read</li>
-                                <li>20 Comment</li>
+                                <li>От <?= $article->author->name;?></li>
                             </ul>
                         </div>
                     </div>
@@ -30,27 +31,9 @@ use yii\widgets\ActiveForm;?>
                     <div class="single-post__top__text">
                         <p><?= $article->content;?> </p><h5 class="pull-right"><?= $article->getDate();?></h5>
                     </div>
-                    <div class="single-post__author__profile">
-                        <div class="single-post__author__profile__pic">
-                            <img src="/blog/img/categories/single-post/author-profile.jpg" alt="">
-                        </div>
-                        <div class="single-post__author__profile__text">
-                            <h4>Lena Mollein.</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                            <div class="single-post__author__profile__social">
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                                <a href="#"><i class="fa fa-google-plus"></i></a>
-                                <a href="#"><i class="fa fa-instagram"></i></a>
-                                <a href="#"><i class="fa fa-youtube-play"></i></a>
-                            </div>
-                        </div>
-                    </div>
                     <div class="single-post__comment">
                         <div class="widget__title">
-                            <h4> Comment</h4>
+                            <h4> Комментарии</h4>
                         </div>
 <?php if(!empty($comments)):?>
     <?php foreach($comments as $comment):?>
@@ -77,7 +60,7 @@ use yii\widgets\ActiveForm;?>
                         'commentForm'=>$commentForm,
                         
                     ]);
-                    echo date('Y-m-d H:i:s')?>
+                    ?>
                 </div>
                 
             </div>

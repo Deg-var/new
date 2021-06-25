@@ -5,7 +5,7 @@ use yii\helpers\Url;
                         <div class="sidebar__item">
                             <div class="sidebar__about__item">
                                 <div class="sidebar__item__title">
-                                    <h6>Popular Posts</h6>
+                                    <h6>Популярное</h6>
                                 </div>
                                     <div class="sidebar__feature__item__list">
                                         <?php foreach ($popular as $article): ?>
@@ -23,7 +23,7 @@ use yii\helpers\Url;
                             </div>
                             <div class="sidebar__about__item">
                                 <div class="sidebar__item__title">
-                                    <h6>Recent</h6>
+                                    <h6>новое</h6>
                                 </div>
                                     <div class="sidebar__feature__item__list">
                                         <?php foreach ($recent as $article): ?>
@@ -41,16 +41,32 @@ use yii\helpers\Url;
                             </div>
                             <div class="sidebar__about__item">
                                 <div class="sidebar__item__title">
-                                    <h6>Categories</h6>
+                                    <h6>Категории</h6>
                                 </div>
                                     <div class="item__list">
-                                        <ul>
+                                        <ul class="sidebarm">
                                         <?php foreach ($categories as $category): ?>
-                                            <a href="<?= Url::toRoute(['site/category','id'=>$category->id])?>"><li>
+                                            <p><a href="<?= Url::toRoute(['site/category','id'=>$category->id])?>"><li>
                                                 <?= $category->title ?>
                                                 <span class="pull-right">
                                                     (<?=$category->getArticlesCount();?>)</span>
-                                                </li></a>
+                                                </li></a></p>
+                                    <?php endforeach; ?>
+                                        </ul>
+                                </div>
+                            </div>
+                            <div class="sidebar__about__item">
+                                <div class="sidebar__item__title">
+                                    <h6>Теги</h6>
+                                </div>
+                                    <div class="item__list">
+                                        <ul class="sidebarm">
+                                        <?php foreach ($tags as $tag): ?>
+                                            <p><a href="<?= Url::toRoute(['site/category','id'=>$tag->id])?>"><li>
+                                                <?= $tag->title ?>
+                                                <span class="pull-right">
+                                                    (<?=$tag->getArticlesCount();?>)</span>
+                                                </li></a></p>
                                     <?php endforeach; ?>
                                         </ul>
                                 </div>

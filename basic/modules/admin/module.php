@@ -28,7 +28,7 @@ class module extends \yii\base\Module
                 'class'=> AccessControl::className(),
                 'denyCallback'=> function($rule,$action)
                 {
-                    throw new yii\web\NotFoundHttpException();
+                    throw new \yii\web\NotFoundHttpException();
                 },
                 'rules'=>[
                     [

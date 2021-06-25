@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link " href="/auth/login" >
+                            <a class="nav-link" href="/auth/login" >
                                 Sign in
                             </a>
                         </li>

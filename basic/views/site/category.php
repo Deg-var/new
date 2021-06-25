@@ -7,11 +7,8 @@ use yii\widgets\LinkPager;?>
                     <div class="row">
                         <div class="col-lg-8 col-md-8">
                             <div class="breadcrumb__text">
-                                <h2>Categories: <span>Recipes</span></h2>
-                                <div class="breadcrumb__option">
-                                    <a href="#">Home</a>
-                                    <span>Recipes</span>
-                                </div>
+                                <h2>Категория: <span><?= $category->title;?></span></h2>
+                                
                             </div>
                             <div class="container">
                                 <div class="col-lg-12 ">
@@ -35,7 +32,8 @@ use yii\widgets\LinkPager;?>
                         </div>
                         <?= $this->render('/partials/sidebar',['popular'=>$popular,
             'recent'=>$recent,
-            'categories'=>$categories,])?>
+            'categories'=>$categories,
+            'tags'=>$tags,])?>
                     </div>
                 </div>
             </div>

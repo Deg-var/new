@@ -67,6 +67,14 @@ AppAsset::register($this);
 </footer>
 
 <?php $this->endBody() ?>
+<?= $this->registerJsFile('/ckeditor/ckeditor.js');?>
+<?= $this->registerJsFile('/ckfinder/ckfinder.js');?>
+<script>
+$(document).ready(function(){
+    var editor = CKEDITOR.replaceAll();
+    CKfinder.setupCKeditor(editor);
+    })
+</script>
 </body>
 </html>
 <?php $this->endPage() ?>
