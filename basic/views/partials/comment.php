@@ -2,9 +2,6 @@
                         <div class="widget__title">
                             <h4>Оставьте комментарий</h4>
                         </div>
-                        <?php if  (Yii::$app->session->getFlash('comment')): ?>
-                            <div class="alert" role="alert"><?=Yii::$app->session->getFlash('comment')?></div>
-                            <?php endif;?>
                        <?php $form=\yii\widgets\ActiveForm::begin([
                            'action'=>['site/comment', 'id'=>$article->id],
                            'options'=>['role'=>'form']])?>

@@ -11,6 +11,7 @@ use app\models\User;
 
 
 
+
 MyAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
@@ -38,12 +39,14 @@ MyAsset::register($this);
             <div class="container">
                 <div class="row">
                     <div class="col-2">
-                    <?php if(Yii::$app->user->getIdentity()):?>
+                    <?php if(Yii::$app->user->id):?>
+                    <?php if(Yii::$app->user->identity->isAdmin):?>
+                    
                     <h5>
                                 <div class="container d-flex">
                         <a href="/admin" class="primary-btn" style="margin: 10px 10px;">Админка</a>
-                                </div>
-                            </h5>
+                                </div><?php endif;?>
+                            </h5><?php else:?>
                             <?php endif;?>
                     </div>
                     <div class="col-8">

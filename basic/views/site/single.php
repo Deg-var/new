@@ -17,8 +17,8 @@ use app\models\Comment;
                         </div>
                         <div class="single-post__title__text">
                             <ul class="label">
-                                <li><a href="<?= Url::toRoute(['site/category','id'=>$article->category_id])?>">
-                                <?= $article->category_id;?>321321</li></a>
+                                <li><a href="<?= Url::toRoute(['site/category','id'=>$article->category->title])?>">
+                                <?= $article->category->title;?></li></a>
                                 
                             </ul>
                             <h4><?= $article->title;?></h4>
@@ -68,4 +68,6 @@ use app\models\Comment;
     </section>
     <?= $this->render('/partials/sidebar',['popular'=>$popular,
             'recent'=>$recent,
-            'categories'=>$categories,])?></section>
+            'categories'=>$categories,
+            'tags'=>$tags,
+            ])?></section>

@@ -16,6 +16,7 @@ use yii\web\UploadedFile;
 use app\models\Category;
 use app\models\Tag;
 
+
 /**
  * ArticleController implements the CRUD actions for Article model.
  */
@@ -175,9 +176,9 @@ public function actionSetTags($id)
     {
         $tags=Yii::$app->request->post('tags');
         $article->saveTags($tags);
-        return $this->redirect(['view', 'id'=>$article->id]);
+        return $this->redirect(['confirm', 'id'=>$article->id]);
     }
-    return $this->render('tags',[
+    return $this->render('settags',[
         'selectedTags'=>$selectedTags,
         'tags'=>$tags
     ]);

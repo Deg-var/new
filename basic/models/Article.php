@@ -69,8 +69,8 @@ public function saveImage($filename){
 }
 public function getImage()
 {
-    
-    return ($this->image) ? '/uploads/'. $this->image :'/no-image.png';}
+    return ($this->image) ? '/uploads/'. $this->image :'/no-image.png';
+}
 public function delImg()
     {
         $imageUploadModel = new ImageUpload();

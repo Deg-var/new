@@ -6,14 +6,15 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
-use yii\filters\VerbFilter;
-use app\models\LoginForm;
+use yii\web\UploadedFile;
 use app\models\ContactForm;
 use app\models\Article;
 use app\models\Category;
 use app\models\Comment;
 use app\models\CommentForm;
 use app\models\Tag;
+use app\models\ImageUpload;
+use yii\helpers\ArrayHelper;
 
 
 class SiteController extends Controller
@@ -27,11 +28,11 @@ class SiteController extends Controller
             'access' => [
                 'class' => AccessControl::className(),
                 
-                'only' => ['login', 'logout', 'signup','new'],
+                'only' => ['login', 'logout', 'signup','new','confirm','setcategory','settags'],
                 'rules' => [
                     [
                         'allow' => false,
-                        'actions' => ['new'],
+                        'actions' => ['new','setimage','confirm','setcategory','settags'],
                         'roles' => ['?'],
                         'matchCallback'=> function($rule,$action)
                         {
@@ -40,7 +41,7 @@ class SiteController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['logout','new'],
+                        'actions' => ['logout','new','setimage','confirm','setcategory','settags'],
                         'roles' => ['@'],
                     ],
                     
@@ -144,7 +145,6 @@ class SiteController extends Controller
             'popular'=>$popular,
             'recent'=>$recent,
             'categories'=>$categories,
-            
             'commentForm'=>$commentForm,
             'tags'=>$tags,]);
     }
@@ -248,11 +248,76 @@ class SiteController extends Controller
         $model = new Article();
 
         if ($model->load(Yii::$app->request->post()) && $model->saveArticle()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['confirm', 'id' => $model->id]);
         }else{
 
         return $this->render('new', [
             'model' => $model,
         ]);} 
     }
+    public function actionConfirm($id)
+    {
+        return $this->render('confirm', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+    protected function findModel($id)
+    {
+        if (($model = Article::findOne($id)) !== null) {
+            return $model;
+        }
+
+        $this->redirect(['site/404']);
+    }
+    public function actionSetImage($id)
+{
+    
+    $model = new ImageUpload;
+    if (Yii::$app->request->isPost)
+    {
+        $article = $this->findModel($id);
+        
+        $file = UploadedFile::getInstance($model,'image');
+       if($article->saveImage($model->uploadFile($file, $article->image)))
+       {
+           return $this->redirect(['confirm','id'=>$article->id]);
+       }
+    };
+    return 
+    $this-> render('image', ['model'=>$model]);
+}
+public function actionSetCategory($id)
+{
+    $article = $this->findModel($id);
+    $selectedCategory=$article->category_id;
+    $categories = ArrayHelper::map(Category::find()->all(), 'id', 'title');
+    if (Yii::$app->request->isPost)
+    {
+        $category = Yii::$app->request->post('category');
+        if($article->saveCategory($category))
+        {
+            return $this->redirect(['confirm','id'=>$article->id]);
+    };
+}
+    return $this->render('setcategory',['article'=>$article,
+    'selectedCategory'=>$selectedCategory,
+'categories'=>$categories]);
+}
+public function actionSetTags($id)
+{
+    $article=$this->findModel($id);
+    $selectedTags = $article->getSelectedTags();
+   
+    $tags=ArrayHelper::map(Tag::find()->all(), 'id', 'title');
+    if (Yii::$app->request->isPost)
+    {
+        $tags=Yii::$app->request->post('tags');
+        $article->saveTags($tags);
+        return $this->redirect(['confirm', 'id'=>$article->id]);
+    }
+    return $this->render('settags',[
+        'selectedTags'=>$selectedTags,
+        'tags'=>$tags
+    ]);
+}
 }
