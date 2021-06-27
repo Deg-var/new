@@ -1737,18 +1737,17 @@ ol {
 }
 
 .single-post__hero {
-    height: 500px;
+    height: auto;
+    width: auto;
     background-size: 100%;
 }
 
 .single-post__title {
-    background: #ffffff;
+    background: #ffffff63;
     -webkit-box-shadow: -1px 5px 5px rgba(20, 14, 5, 0.1);
     box-shadow: -1px 5px 5px rgba(20, 14, 5, 0.1);
     padding: 50px;
     padding-right: 40px;
-    position: relative;
-    margin-top: -105px;
     margin-bottom: 50px;
 }
 
@@ -3219,7 +3218,7 @@ ol {
         width: 100%;
     }
     .single-post__hero {
-        height: 700px;
+        height: 200px;
     }
     .signin {
         -webkit-box-align: start;

@@ -15,6 +15,7 @@ use app\models\CommentForm;
 use app\models\Tag;
 use app\models\ImageUpload;
 use yii\helpers\ArrayHelper;
+use yii\data\Sort;
 
 
 class SiteController extends Controller
@@ -28,11 +29,11 @@ class SiteController extends Controller
             'access' => [
                 'class' => AccessControl::className(),
                 
-                'only' => ['login', 'logout', 'signup','new','confirm','setcategory','settags'],
+                'only' => ['login', 'logout', 'signup','new','preview','setcategory','settags'],
                 'rules' => [
                     [
                         'allow' => false,
-                        'actions' => ['new','setimage','confirm','setcategory','settags'],
+                        'actions' => ['new','setimage','preview','setcategory','settags'],
                         'roles' => ['?'],
                         'matchCallback'=> function($rule,$action)
                         {
@@ -41,7 +42,7 @@ class SiteController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['logout','new','setimage','confirm','setcategory','settags'],
+                        'actions' => ['logout','new','setimage','preview','setcategory','settags'],
                         'roles' => ['@'],
                     ],
                     
@@ -79,6 +80,10 @@ class SiteController extends Controller
         $recent =Article::getRecent();
         $categories=Category::getAll();
         $tags=Tag::getAll();
+        
+    
+        
+    
 
     return $this->render('index', [
          'articles' => $data['articles'],
@@ -248,17 +253,38 @@ class SiteController extends Controller
         $model = new Article();
 
         if ($model->load(Yii::$app->request->post()) && $model->saveArticle()) {
-            return $this->redirect(['confirm', 'id' => $model->id]);
+            return $this->redirect(['preview', 'id' => $model->id]);
         }else{
 
         return $this->render('new', [
             'model' => $model,
         ]);} 
     }
-    public function actionConfirm($id)
+    public function actionPreview($id)
     {
-        return $this->render('confirm', [
+        $article= Article::findOne($id);
+        $popular= Article::getPopular();
+        $recent =Article::getRecent();
+        $categories=Category::getAll();
+        $comments=$article->getArticleComments();
+        $commentForm = new CommentForm();
+        $article->viewedCounter();
+        $tags=Tag::getAll();
+        $tag= Tag::findOne($id);
+        $selectedTags = $article->getSelectedTags();
+        
+                
+        return $this->render('preview',[
+            'article'=>$article,
+            'popular'=>$popular,
+            'recent'=>$recent,
+            'categories'=>$categories,
+            'comments'=>$comments,
+            'commentForm'=>$commentForm,
+            'tags'=>$tags,
             'model' => $this->findModel($id),
+            'tag'=>$tag,
+            'selectedTags'=>$selectedTags,
         ]);
     }
     protected function findModel($id)
@@ -280,7 +306,7 @@ class SiteController extends Controller
         $file = UploadedFile::getInstance($model,'image');
        if($article->saveImage($model->uploadFile($file, $article->image)))
        {
-           return $this->redirect(['confirm','id'=>$article->id]);
+           return $this->redirect(['preview','id'=>$article->id]);
        }
     };
     return 
@@ -296,7 +322,7 @@ public function actionSetCategory($id)
         $category = Yii::$app->request->post('category');
         if($article->saveCategory($category))
         {
-            return $this->redirect(['confirm','id'=>$article->id]);
+            return $this->redirect(['preview','id'=>$article->id]);
     };
 }
     return $this->render('setcategory',['article'=>$article,
@@ -313,7 +339,7 @@ public function actionSetTags($id)
     {
         $tags=Yii::$app->request->post('tags');
         $article->saveTags($tags);
-        return $this->redirect(['confirm', 'id'=>$article->id]);
+        return $this->redirect(['preview', 'id'=>$article->id]);
     }
     return $this->render('settags',[
         'selectedTags'=>$selectedTags,

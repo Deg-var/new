@@ -176,7 +176,7 @@ public function actionSetTags($id)
     {
         $tags=Yii::$app->request->post('tags');
         $article->saveTags($tags);
-        return $this->redirect(['confirm', 'id'=>$article->id]);
+        return $this->redirect(['preview', 'id'=>$article->id]);
     }
     return $this->render('settags',[
         'selectedTags'=>$selectedTags,

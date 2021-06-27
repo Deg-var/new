@@ -62,7 +62,7 @@ use yii\helpers\Url;
                                     <div class="item__list">
                                         <ul class="sidebarm">
                                         <?php foreach ($tags as $tag): ?>
-                                            <p><a href="<?= Url::toRoute(['site/category','id'=>$tag->id])?>"><li>
+                                            <p><a href="<?= Url::toRoute(['site/tags','id'=>$tag->id])?>"><li>
                                                 <?= $tag->title ?>
                                                 <span class="pull-right">
                                                     (<?=$tag->getArticlesCount();?>)</span>

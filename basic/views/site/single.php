@@ -17,8 +17,8 @@ use app\models\Comment;
                         </div>
                         <div class="single-post__title__text">
                             <ul class="label">
-                                <li><a href="<?= Url::toRoute(['site/category','id'=>$article->category->title])?>">
-                                <?= $article->category->title;?></li></a>
+                                <li><?php if ($article->category):?><a href="<?= Url::toRoute(['site/category','id'=>$article->category->title])?>">
+                                <?= $article->category->title;?></a><?php else:?>(без категории)<?php endif;?></li>
                                 
                             </ul>
                             <h4><?= $article->title;?></h4>

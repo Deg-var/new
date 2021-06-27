@@ -121,7 +121,9 @@ public function getDate()
 }
 public static function getAll()
 {
-    $query = Article::find();
+    $query = Article::find()
+    ->where(['status' => null])
+    ->orderBy('RAND()');
     $count = $query->count();
     $pagination = new Pagination(['totalCount' =>$count,'pageSize'=>10]);
     $articles = $query->offset($pagination->offset)
@@ -134,7 +136,10 @@ public static function getAll()
 }
 public static function getPopular()
 {
-    return  Article::find()->orderBy('viewed desc')->limit(3)->all();
+    return  Article::find()
+    ->orderBy('viewed desc')
+    ->limit(3)
+    ->all();
 }
 public static function getRecent()
 {
