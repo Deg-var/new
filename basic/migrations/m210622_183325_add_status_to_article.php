@@ -12,7 +12,7 @@ class m210622_183325_add_status_to_article extends Migration
      */
     public function up()
     {
-        $this->addColumn('article', 'status',$this->integer());
+        $this->addColumn('article', 'status',$this->integer()->defaultValue(1));
     }
 
     /**

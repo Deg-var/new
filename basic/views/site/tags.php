@@ -1,5 +1,5 @@
 <?php use yii\helpers\Url;?>
-
+<?php header('Location:/site/404');die;?>
 <section class="categories categories-grid spad">
         <div class="categories__post">
             <div class="container">

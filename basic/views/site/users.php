@@ -9,16 +9,19 @@
                             <div class="breadcrumb__text">
                                 <h2>Все категории</h2>
                             </div>
-                            <?php foreach($categories as $category):?>
+                            <?php foreach($users as $user):?>
                             <div class="categories__list__post__item">
                                 <div class="row">
                                     
                                     <div class="col-lg-12 col-md-12">
                                         <div class="categories__post__item__text">
-                                            <a href="<?= Url::toRoute(['site/category','id'=>$category->id]);?>"><span class="post__label"><?= $category->title ?></span></a>
+                                            <a href="<?= Url::toRoute(['site/category','id'=>$user->id]);?>">
+                                            <span class="post__label">
+                                            <?= $user->name ?>
+                                            </span></a>
                                             <h3></h3>
                                             <ul class="post__widget">
-                                                <li>Статей в категории: <?=$category->getArticlesCount();?> </li>
+                                                <li>Статей у автора: <?=$user->getArticlesCount();?> </li>
                                             </ul>
                                            
                                         </div>
@@ -31,8 +34,8 @@
             'popular'=>$popular,
             'recent'=>$recent,
             'categories'=>$categories,
+            'users'=>$users,
             'popularcategories'=>$popularcategories,
-            'users'=>$user,
             // 'tags'=>$tags,
             ])?>
                     </div>

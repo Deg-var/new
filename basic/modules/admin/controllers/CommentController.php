@@ -1,6 +1,7 @@
 <?php
 namespace app\modules\admin\controllers;
 
+use app\models\Article;
 use yii\web\Controller;
 use app\models\Comment;
 
@@ -20,6 +21,8 @@ class CommentController extends Controller
             return $this->redirect(['comment/index']);
         }
     }
+    
+    
     public function actionAllow($id)
     {
         $comment = Comment::findOne($id);

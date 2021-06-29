@@ -8,14 +8,14 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="article-form">
+<div class="article-form container">
 
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'image')->fileInput(['maxlength' => true]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Submit', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Подтвердить', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -7,7 +7,7 @@ use yii\widgets\ActiveForm;
 /* @var $model app\models\Article */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
+<?php header('Location:/site/404');die;?>
 <div class="article-form">
 
     <?php $form = ActiveForm::begin(); ?>

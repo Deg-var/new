@@ -5,19 +5,18 @@ use yii\base\Widget;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use app\models\Comment;
-?>
+use phpDocumentor\Reflection\Location;
+
+?><?php if ($article->status===2):?>
 <section class="categories categories-grid spad container"><div class="row"><section class="single-post spad col-8">
         <div class="single-post__hero set-bg" data-setbg="<?= $article->getImage();?>"></div>
         <div class="container">
             <div class="row d-flex justify-content-center">
                 <div class="col-lg-8">
                     <div class="single-post__title">
-                        <div class="single-post__title__meta">
-                            
-                        </div>
                         <div class="single-post__title__text">
                             <ul class="label">
-                                <li><?php if ($article->category):?><a href="<?= Url::toRoute(['site/category','id'=>$article->category->title])?>">
+                                <li><?php if ($article->category_id):?><a href="<?= Url::toRoute(['site/category','id'=>$article->category->title])?>">
                                 <?= $article->category->title;?></a><?php else:?>(без категории)<?php endif;?></li>
                                 
                             </ul>
@@ -69,5 +68,11 @@ use app\models\Comment;
     <?= $this->render('/partials/sidebar',['popular'=>$popular,
             'recent'=>$recent,
             'categories'=>$categories,
-            'tags'=>$tags,
-            ])?></section>
+            'popularcategories'=>$popularcategories,
+            'users'=>$users,
+            // 'tags'=>$tags,
+            ])?>
+            </section>
+            <?php else:?>
+            <?php header('Location:/site/404');die;?>
+            <?php endif;?>

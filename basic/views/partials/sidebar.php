@@ -1,23 +1,25 @@
 <?php 
 use yii\helpers\Url;
 ?>
-<div class="col-4">
+                    <div class="col-4">
                         <div class="sidebar__item">
                             <div class="sidebar__about__item">
                                 <div class="sidebar__item__title">
                                     <h6>Популярное</h6>
                                 </div>
                                     <div class="sidebar__feature__item__list">
-                                        <?php foreach ($popular as $article): ?>
-                                            <a href="<?= Url::toRoute(['site/view','id'=>$article->id]);?>">
-                                            <div class="sidebar__feature__item__large set-bg"
-                                    data-setbg="<?= $article->getImage() ?>">
                                     
-                                </div><div class="sidebar__item__title">
+                                        <?php foreach ($popular as $article): ?>
+                                        <?php if ($article->status===2):?>
+                                            <a href="<?= Url::toRoute(['/site/view','id'=>$article->id]);?>" class="row">
+                                            <img class="sidebar__feature__item__large col-4"
+                                    src="<?= $article->getImage() ?>">
+                                    
+                                <div class="sidebar__item__title col-8">
                                         <span><?= $article->title ?></span>
-                                        <h5><a href="#"><?= $article->description ?></a></h5>
+                                        <h5><?= $article->description ?></h5>
                                         
-                                    </div></a>
+                                    </div></a><?php endif;?>
                                     <?php endforeach; ?>
                                 </div>
                             </div>
@@ -27,29 +29,29 @@ use yii\helpers\Url;
                                 </div>
                                     <div class="sidebar__feature__item__list">
                                         <?php foreach ($recent as $article): ?>
-                                            <a href="<?= Url::toRoute(['site/view','id'=>$article->id]);?>">
-                                            <div class="sidebar__feature__item__large set-bg"
-                                    data-setbg="<?= $article->getImage() ?>">
-                                    <div class="sidebar__feature__item__large--text">
+                                            <?php if ($article->status===2):?>
+                                            <a href="<?= Url::toRoute(['/site/view','id'=>$article->id]);?>" class="row">
+                                            <img class="sidebar__feature__item__large col-4"
+                                    src="<?= $article->getImage() ?>">
+                                    <div class="sidebar__feature__item__large--text col-8">
                                         <span><?= $article->title ?></span>
                                         <h5><?= $article->description ?></h5>
                                         <h5 class="pull-right"><?= $article->getDate() ?></h5>
                                     </div>
-                                </div></a>
+                                </a><?php endif;?>
                                     <?php endforeach; ?>
                                 </div>
-                            </div>
                             <div class="sidebar__about__item">
                                 <div class="sidebar__item__title">
-                                    <h6>Категории</h6>
+                                    <h6>Популярные категории</h6>
                                 </div>
                                     <div class="item__list">
                                         <ul class="sidebarm">
-                                        <?php foreach ($categories as $category): ?>
-                                            <p><a href="<?= Url::toRoute(['site/category','id'=>$category->id])?>"><li>
-                                                <?= $category->title ?>
+                                        <?php foreach ($popularcategories as $popularcategory): ?>
+                                            <p><a href="<?= Url::toRoute(['/site/category','id'=>$popularcategory->id])?>"><li>
+                                                <?= $popularcategory->title ?>
                                                 <span class="pull-right">
-                                                    (<?=$category->getArticlesCount();?>)</span>
+                                                    (<?=$popularcategory->getArticlesCount();?>)</span>
                                                 </li></a></p>
                                     <?php endforeach; ?>
                                         </ul>
@@ -57,15 +59,15 @@ use yii\helpers\Url;
                             </div>
                             <div class="sidebar__about__item">
                                 <div class="sidebar__item__title">
-                                    <h6>Теги</h6>
+                                    <h6>Популярные Авторы</h6>
                                 </div>
                                     <div class="item__list">
                                         <ul class="sidebarm">
-                                        <?php foreach ($tags as $tag): ?>
-                                            <p><a href="<?= Url::toRoute(['site/tags','id'=>$tag->id])?>"><li>
-                                                <?= $tag->title ?>
+                                        <?php foreach ($users as $user): ?>
+                                            <p><a href="<?= Url::toRoute(['/site/user','id'=>$user->name])?>"><li>
+                                                <?= $user->name ?>
                                                 <span class="pull-right">
-                                                    (<?=$tag->getArticlesCount();?>)</span>
+                                                    (<?=$user->getArticlesCount();?>)</span>
                                                 </li></a></p>
                                     <?php endforeach; ?>
                                         </ul>

@@ -7,7 +7,7 @@ use yii\widgets\LinkPager;?>
                     <div class="row">
                         <div class="col-lg-8 col-md-8">
                             <div class="breadcrumb__text">
-                                <h2>Категория: <span><?= $category->title;?></span></h2>
+                                <h2> Автор: <span><?= $user->id;?></span></h2>
                                 
                             </div>
                             <div class="container">

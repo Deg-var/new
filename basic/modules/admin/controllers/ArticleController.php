@@ -166,22 +166,22 @@ public function actionSetCategory($id)
     'selectedCategory'=>$selectedCategory,
 'categories'=>$categories]);
 }
-public function actionSetTags($id)
-{
-    $article=$this->findModel($id);
-    $selectedTags = $article->getSelectedTags();
+// public function actionSetTags($id)
+// {
+//     $article=$this->findModel($id);
+//     $selectedTags = $article->getSelectedTags();
    
-    $tags=ArrayHelper::map(Tag::find()->all(), 'id', 'title');
-    if (Yii::$app->request->isPost)
-    {
-        $tags=Yii::$app->request->post('tags');
-        $article->saveTags($tags);
-        return $this->redirect(['preview', 'id'=>$article->id]);
-    }
-    return $this->render('settags',[
-        'selectedTags'=>$selectedTags,
-        'tags'=>$tags
-    ]);
-}
+//     $tags=ArrayHelper::map(Tag::find()->all(), 'id', 'title');
+//     if (Yii::$app->request->isPost)
+//     {
+//         $tags=Yii::$app->request->post('tags');
+//         $article->saveTags($tags);
+//         return $this->redirect(['preview', 'id'=>$article->id]);
+//     }
+//     return $this->render('settags',[
+//         'selectedTags'=>$selectedTags,
+//         'tags'=>$tags
+//     ]);
+// }
 };
 

@@ -1,5 +1,6 @@
 <?php use yii\helpers\Url;
 use yii\widgets\LinkPager;?>
+<?php header('Location:/site/404');die;?>
 <section class="categories categories-grid spad">
         <div class="categories__post">
             <div class="container">
@@ -7,7 +8,7 @@ use yii\widgets\LinkPager;?>
                     <div class="row">
                         <div class="col-lg-8 col-md-8">
                             <div class="breadcrumb__text">
-                                <h2>Тег: <span><?= $tag->title;?></span></h2>
+                                <h2>Тег: <span></span></h2>
                                 
                             </div>
                             <div class="container">
@@ -15,7 +16,7 @@ use yii\widgets\LinkPager;?>
                                     <?php foreach($articles as $article):?>
                                         <a href="<?= Url::toRoute(['site/view','id'=>$article->id]);?>">
                                             <div class="sidebar__feature__item__large set-bg"
-                                    data-setbg="<?= $article->getImage() ?>">
+                                    data-setbg="">
                                     
                                 </div><div class="sidebar__item__title row container-fuid">
                                         <div class="col-9"><h4><?= $article->title ?></h4>
@@ -24,7 +25,7 @@ use yii\widgets\LinkPager;?>
                                         
                                     </div></a>
                                     <?php endforeach;?>
-                                </div><<div class="row justify-content-center">
+                                </div><div class="row justify-content-center">
                 <?php echo LinkPager::widget([
     'pagination' => $pagination,
 ]);?></div>

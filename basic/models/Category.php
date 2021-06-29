@@ -3,6 +3,7 @@
 namespace app\models;
 use yii\data\Pagination;
 use Yii;
+use app\models\Article;
 
 /**
  * This is the model class for table "category".
@@ -44,6 +45,12 @@ class Category extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Article::className(), ['category_id' => 'id']);
     }
+    public static function getPopularCategory()
+{
+    return  Category::find()
+    ->limit(3)
+    ->all();
+}
     public function getArticlesCount()
     {
         return $this->getArticles()->count();
@@ -63,9 +70,7 @@ class Category extends \yii\db\ActiveRecord
     
             $data['articles']=$articles;
             $data['pagination']=$pagination;
-            $popular= Article::getPopular();
-            $recent =Article::getRecent();
-            $categories=Category::getAll();
+            
             return $data;
     }
 }

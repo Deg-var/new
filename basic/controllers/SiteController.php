@@ -14,8 +14,12 @@ use app\models\Comment;
 use app\models\CommentForm;
 use app\models\Tag;
 use app\models\ImageUpload;
+use yii\data\Pagination;
 use yii\helpers\ArrayHelper;
 use yii\data\Sort;
+use app\models\User;
+
+
 
 
 class SiteController extends Controller
@@ -23,17 +27,18 @@ class SiteController extends Controller
     /**
      * {@inheritdoc}
      */
+    
     public function behaviors()
     {
         return [
             'access' => [
                 'class' => AccessControl::className(),
                 
-                'only' => ['login', 'logout', 'signup','new','preview','setcategory','settags'],
+                'only' => ['login', 'logout', 'signup','new','preview','setcategory','settags','myarticle'],
                 'rules' => [
                     [
                         'allow' => false,
-                        'actions' => ['new','setimage','preview','setcategory','settags'],
+                        'actions' => ['new','setimage','preview','setcategory','settags','myarticle'],
                         'roles' => ['?'],
                         'matchCallback'=> function($rule,$action)
                         {
@@ -42,10 +47,9 @@ class SiteController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['logout','new','setimage','preview','setcategory','settags'],
+                        'actions' => ['logout','new','setimage','preview','setcategory','settags','myarticle'],
                         'roles' => ['@'],
                     ],
-                    
                 ],
             ],
         ];
@@ -75,23 +79,42 @@ class SiteController extends Controller
     public function actionIndex()
     {
         
-        $data =Article::getAll();
+       $sort = new Sort([
+            'attributes' => [
+                'date'=>[
+                    'asc' => ['date' => SORT_ASC],
+                    'desc' => ['date' => SORT_DESC],
+                ],
+                'user_id'=>[
+                    'asc' => ['user_id' => SORT_ASC],
+                    'desc' => ['user_id' => SORT_DESC],
+                    'default' => SORT_DESC,
+                ],
+            ],
+        ]);
         $popular= Article::getPopular();
         $recent =Article::getRecent();
         $categories=Category::getAll();
-        $tags=Tag::getAll();
+        $query =Article::find()->where(['status'=>2])->orderBy($sort->orders);
+        $count = $query->count();
+        $pagination = new Pagination(['totalCount'=>$count]);
+        $articles=$query->offset($pagination->offset)->limit($pagination->limit)->all();
+        $users=User::getAll();
+        $popularcategories = Category::getPopularCategory();
         
-    
+        // $tags=Tag::getAll();
         
-    
-
     return $this->render('index', [
-         'articles' => $data['articles'],
-         'pagination' => $data['pagination'],
+         'articles' => $articles,
+         'pagination' => $pagination,
          'popular'=>$popular,
          'recent'=>$recent,
          'categories'=>$categories,
-         'tags'=>$tags,
+         'sort'=>$sort,
+         'users'=>$users,
+        'popularcategories'=>$popularcategories,
+         
+        //  'tags'=>$tags,
     ]);
     }
 
@@ -140,10 +163,10 @@ class SiteController extends Controller
         $popular= Article::getPopular();
         $recent =Article::getRecent();
         $categories=Category::getAll();
-        
         $commentForm = new CommentForm();
-        
-        $tags=Tag::getAll();
+        // $tags=Tag::getAll();
+        $users=User::getAll();
+        $popularcategories = Category::getPopularCategory();
                 
         return $this->render('categories',[
             
@@ -151,7 +174,32 @@ class SiteController extends Controller
             'recent'=>$recent,
             'categories'=>$categories,
             'commentForm'=>$commentForm,
-            'tags'=>$tags,]);
+            'users'=>$users,
+        'popularcategories'=>$popularcategories,
+            // 'tags'=>$tags,
+        ]);
+    }
+    public function actionUsers()
+    {
+        $users=User::getAll();
+        $popular= Article::getPopular();
+        $recent =Article::getRecent();
+        $categories=Category::getAll();
+        $commentForm = new CommentForm();
+        // $tags=Tag::getAll();
+        $users=User::getAll();
+        $popularcategories = Category::getPopularCategory();
+                
+        return $this->render('users',[
+            'users'=>$users,
+            'popular'=>$popular,
+            'recent'=>$recent,
+            'categories'=>$categories,
+            'commentForm'=>$commentForm,
+            // 'tags'=>$tags,
+            
+        'popularcategories'=>$popularcategories,
+        ]);
     }
     public function actionView($id)
     {
@@ -162,7 +210,9 @@ class SiteController extends Controller
         $comments=$article->getArticleComments();
         $commentForm = new CommentForm();
         $article->viewedCounter();
-        $tags=Tag::getAll();
+        // $tags=Tag::getAll();
+        $users=User::getAll();
+        $popularcategories = Category::getPopularCategory();
                 
         return $this->render('single',[
             'article'=>$article,
@@ -171,24 +221,26 @@ class SiteController extends Controller
             'categories'=>$categories,
             'comments'=>$comments,
             'commentForm'=>$commentForm,
-            'tags'=>$tags,
+            'users'=>$users,
+        'popularcategories'=>$popularcategories,
+            // 'tags'=>$tags,
         ]);
     }
-    public function actionTags()
-    {
-        $popular= Article::getPopular();
-        $recent =Article::getRecent();
-        $categories=Category::getAll();
-        $commentForm = new CommentForm();
-        $tags=Tag::getAll();
+    // public function actionTags()
+    // {
+    //     $popular= Article::getPopular();
+    //     $recent =Article::getRecent();
+    //     $categories=Category::getAll();
+    //     $commentForm = new CommentForm();
+    //     $tags=Tag::getAll();
                 
-        return $this->render('tags',[
-            'popular'=>$popular,
-            'recent'=>$recent,
-            'categories'=>$categories,
-            'commentForm'=>$commentForm,
-            'tags'=>$tags,]);
-    }
+    //     return $this->render('tags',[
+    //         'popular'=>$popular,
+    //         'recent'=>$recent,
+    //         'categories'=>$categories,
+    //         'commentForm'=>$commentForm,
+    //         'tags'=>$tags,]);
+    // }
     public function actionCategory($id)
     {
         $category= Category::findOne($id);
@@ -196,7 +248,9 @@ class SiteController extends Controller
         $popular= Article::getPopular();
         $recent =Article::getRecent();
         $categories=Category::getAll();
-        $tags=Tag::getAll();
+        // $tags=Tag::getAll();
+        $users=User::getAll();
+        $popularcategories = Category::getPopularCategory();
     
 
 
@@ -206,31 +260,37 @@ class SiteController extends Controller
             'popular'=>$popular,
             'recent'=>$recent,
             'categories'=>$categories,
-            'tags'=>$tags,
             'category'=>$category,
+            'users'=>$users,
+            'popularcategories'=>$popularcategories,
+            // 'tags'=>$tags,
        ]);
     }
-    public function actionTag($id)
-    {
-        $tag= Tag::findOne($id);
-        $data = Category::getArticlesByCategory($id);
-        $popular= Article::getPopular();
-        $recent =Article::getRecent();
-        $categories=Category::getAll();
-        $tags=Tag::getAll();
-    
+    // public function actionTag($id)
+    // {
+    //     $tag= Tag::findOne($id);
+    //     $data = Category::getArticlesByCategory($id);
+    //     $popular= Article::getPopular();
+    //     $recent =Article::getRecent();
+    //     $categories=Category::getAll();
+    //     $tags=Tag::getAll();
+    //     $article= Article::find();
+    //     $articleByTags = $article->getArticlesByTag();
+        
+        
 
 
-        return $this->render('tag', [
-            'articles' => $data['articles'],
-            'pagination' => $data['pagination'],
-            'popular'=>$popular,
-            'recent'=>$recent,
-            'categories'=>$categories,
-            'tags'=>$tags,
-            'tag'=>$tag,
-       ]);
-    }
+    //     return $this->render('tag', [
+    //         'articles' => $data['articles'],
+    //         'pagination' => $data['pagination'],
+    //         'popular'=>$popular,
+    //         'recent'=>$recent,
+    //         'categories'=>$categories,
+    //         'tags'=>$tags,
+    //         'tag'=>$tag,
+            
+    //    ]);
+    // }
     public function getComment()
     {
         return $this->hasMany(Comment::classname(),['article3_id'=>'id']);
@@ -269,10 +329,11 @@ class SiteController extends Controller
         $comments=$article->getArticleComments();
         $commentForm = new CommentForm();
         $article->viewedCounter();
-        $tags=Tag::getAll();
-        $tag= Tag::findOne($id);
-        $selectedTags = $article->getSelectedTags();
-        
+        // $tags=Tag::getAll();
+        // $tag= Tag::findOne($id);
+        // $selectedTags = $article->getSelectedTags();
+        $users=User::getAll();
+        $popularcategories = Category::getPopularCategory();
                 
         return $this->render('preview',[
             'article'=>$article,
@@ -281,10 +342,12 @@ class SiteController extends Controller
             'categories'=>$categories,
             'comments'=>$comments,
             'commentForm'=>$commentForm,
-            'tags'=>$tags,
+            // 'tags'=>$tags,
             'model' => $this->findModel($id),
-            'tag'=>$tag,
-            'selectedTags'=>$selectedTags,
+            // 'tag'=>$tag,
+            // 'selectedTags'=>$selectedTags,
+            'users'=>$users,
+        'popularcategories'=>$popularcategories,
         ]);
     }
     protected function findModel($id)
@@ -329,21 +392,111 @@ public function actionSetCategory($id)
     'selectedCategory'=>$selectedCategory,
 'categories'=>$categories]);
 }
-public function actionSetTags($id)
-{
-    $article=$this->findModel($id);
-    $selectedTags = $article->getSelectedTags();
+// public function actionSetTags($id)
+// {
+//     $article=$this->findModel($id);
+//     $selectedTags = $article->getSelectedTags();
    
-    $tags=ArrayHelper::map(Tag::find()->all(), 'id', 'title');
-    if (Yii::$app->request->isPost)
+//     $tags=ArrayHelper::map(Tag::find()->all(), 'id', 'title');
+//     if (Yii::$app->request->isPost)
+//     {
+//         $tags=Yii::$app->request->post('tags');
+//         $article->saveTags($tags);
+//         return $this->redirect(['preview', 'id'=>$article->id]);
+//     }
+//     return $this->render('settags',[
+//         'selectedTags'=>$selectedTags,
+//         'tags'=>$tags
+//     ]);
+// }
+public function actionAllow($id)
+{
+    $article = Article::findOne($id);
+    if($article->allow())
     {
-        $tags=Yii::$app->request->post('tags');
-        $article->saveTags($tags);
-        return $this->redirect(['preview', 'id'=>$article->id]);
+        return $this->redirect(['preview', 'id' =>$id]);
     }
-    return $this->render('settags',[
-        'selectedTags'=>$selectedTags,
-        'tags'=>$tags
-    ]);
 }
+public function actionDisallow($id)
+{
+    $article = Article::findOne($id);
+    if($article->disallow())
+    {
+        return $this->redirect(['preview', 'id' =>$id]);
+    }
+}                     
+public function actionDelete($id)
+    {
+        $article=Article::findOne($id);
+        if($article->delete())
+        {
+            return $this->redirect(['index']);
+        }
+    }
+    public function actionMyarticle()
+    {
+        $sort = new Sort([
+            'attributes' => [
+                'date'=>[
+                    'asc' => ['date' => SORT_ASC],
+                    'desc' => ['date' => SORT_DESC],
+                ],
+                'user_id'=>[
+                    'asc' => ['user_id' => SORT_ASC],
+                    'desc' => ['user_id' => SORT_DESC],
+                    'default' => SORT_DESC,
+                ],
+            ],
+        ]);
+        $popular= Article::getPopular();
+        $recent =Article::getRecent();
+        $categories=Category::getAll();
+        // $tags=Tag::getAll();
+        $users=User::getAll();
+        $popularcategories = Category::getPopularCategory();
+        $query =Article::find()->where(['status'=>2])->orderBy($sort->orders);
+        $count = $query->count();
+        $pagination = new Pagination(['totalCount'=>$count]);
+        $articles=$query->offset($pagination->offset)->limit($pagination->limit)->all();
+    
+        
+    
+
+    return $this->render('myarticle', [
+         'articles' => $articles,
+         'pagination' => $pagination,
+         'popular'=>$popular,
+         'recent'=>$recent,
+         'categories'=>$categories,
+        //  'tags'=>$tags,
+        'users'=>$users,
+        'popularcategories'=>$popularcategories,
+    ]);
+    }
+    public function actionUser($id)
+    {
+        
+        $data = User::getArticlesByUser($id);
+        $popular= Article::getPopular();
+        $recent =Article::getRecent();
+        $categories=Category::getAll();
+        // $tags=Tag::getAll();
+        $users=User::getAll();
+        $popularcategories = Category::getPopularCategory();
+        $user= User::findOne($id);
+    
+
+
+        return $this->render('user', [
+            'articles' => $data['articles'],
+            'pagination' => $data['pagination'],
+            'popular'=>$popular,
+            'recent'=>$recent,
+            'categories'=>$categories,
+            'users'=>$users,
+            'popularcategories'=>$popularcategories,
+            'user'=>$user,
+            // 'tags'=>$tags,
+       ]);
+    }
 }

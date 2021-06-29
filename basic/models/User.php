@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\web\IdentityInterface;
+use yii\data\Pagination;
 
 /**
  * This is the model class for table "user".
@@ -133,19 +134,30 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
  * @param int $id
  * @return mixed|null
  */
-public function getRoleName(int $id)
-{
-    $list = self::roles();
-    return $list[$id] ?? null;
-}
 
-public function isAdmin()
-{
-    return ($this->role == self::ROLE_ADMIN);
-}
-
-public function isUser()
-{
-    return ($this->role == self::ROLE_USER);
-}
+public function getArticles()
+    {
+        return $this->hasMany(Article::className(), ['user_id' => 'id']);
+    }
+    public function getArticlesCount()
+    {
+        return $this->getArticles()->count();
+    }
+    public static function getAll()
+    {
+        return User::find()->all();
+    }
+    public static function getArticlesByUser($id)
+    {
+        $query = Article::find()->where(['user_id'=>$id]);
+        $count = $query->count();
+        $pagination = new Pagination(['totalCount' =>$count,'pageSize'=>10]);
+        $articles = $query->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
+    
+            $data['articles']=$articles;
+            $data['pagination']=$pagination;
+            return $data;
+    }
 }

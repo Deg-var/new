@@ -38,15 +38,20 @@ MyAsset::register($this);
         <div class="header__top">
             <div class="container">
                 <div class="row">
-                    <div class="col-2">
+                    <div class="col-2 p-0">
                     <?php if(Yii::$app->user->id):?>
                     <?php if(Yii::$app->user->identity->isAdmin):?>
                     
                     <h5>
-                                <div class="container d-flex">
+                                <div class="d-flex">
                         <a href="/admin" class="primary-btn" style="margin: 10px 10px;">Админка</a>
-                                </div><?php endif;?>
-                            </h5><?php else:?>
+                                </div><?php else:?>
+                                <h5>
+                                <div class="d-flex p-0">
+                        <a href="<?= Url::toRoute(['site/myarticle','id'=>Yii::$app->user->id])?>" class="primary-btn px-4" style="margin: 10px 10px;">Мои статьи</a>
+                                </div></h5>
+                            </h5><?php endif;?>
+                            <?php else:?>
                             <?php endif;?>
                     </div>
                     <div class="col-8">
@@ -55,7 +60,7 @@ MyAsset::register($this);
                                 <li class=""><a href="/site/index">Главная</a></li>
                                 
                                 <li class=""><a href="/site/categories">Категории</a></li>
-                                <li class=""><a href="/site/tags">Теги</a></li>
+                                <!-- <li class=""><a href="/site/tags">Теги</a></li> -->
                                 <li class=""><a href="/site/about">О нас</a></li>
                                 <li class=""><a href="/site/contact">Контакты</a></li>
                 
@@ -167,7 +172,8 @@ MyAsset::register($this);
 <?= $this->registerJsFile('/ckfinder/ckfinder.js');?>
 <script>
 $(document).ready(function(){
-    var editor = CKEDITOR.replaceAll();
+    var editor = CKEDITOR.replace('article-description');
+    var editor = CKEDITOR.replace('article-content');
     CKfinder.setupCKeditor(editor);
     })
 </script>

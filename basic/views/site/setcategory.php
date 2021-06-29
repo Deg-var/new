@@ -8,14 +8,14 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="article-form">
+<div class="article-form container">
 
     <?php $form = ActiveForm::begin(); ?>
 
     <?=  Html::dropDownList('category', $selectedCategory,$categories,['class'=>'form-control']) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Submit', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Подтвердить', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

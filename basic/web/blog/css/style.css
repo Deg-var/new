@@ -676,7 +676,7 @@ ol {
     margin-bottom: 50px;
 }
 
-.humberger__menu__about img {
+.humberger__menu__about {
     min-width: 100%;
     margin-bottom: 20px;
 }
@@ -1441,7 +1441,7 @@ ol {
     margin-bottom: 60px;
 }
 
-.sidebar__about__item img {
+.sidebar__about__item {
     min-width: 100%;
     margin-bottom: 20px;
 }
@@ -1520,7 +1520,22 @@ ol {
 }
 
 .sidebar__feature__item__large {
+    height: 100px;
+    min-width: 0%;
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.sidebar__feature__item__large2 {
     height: 200px;
+    width: 200px;
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.sidebar__feature__item__large1 {
+    height: 100px;
+    min-width: 100px;
     position: relative;
     margin-bottom: 30px;
 }
