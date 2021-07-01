@@ -116,24 +116,16 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             $this->create();
             return Yii::$app->user->login($this);
     }
+    public function saveImage($filename){
+        $this->photo =$filename;
+        return $this->save(false);
+    }
     public function getImage()
     {
         
-        return $this->photo;
+        return ($this->photo) ? '/uploads/'. $this->photo :'/no-image.png';
+       
     }
-    public static function roles()
-{
-    return [
-        self::ROLE_USER => Yii::t('app', 'User'),
-        self::ROLE_ADMIN => Yii::t('app', 'Admin'),
-    ];
-}
-
-/**
- * Название роли
- * @param int $id
- * @return mixed|null
- */
 
 public function getArticles()
     {

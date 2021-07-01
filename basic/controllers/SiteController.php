@@ -84,21 +84,24 @@ class SiteController extends Controller
                 'date'=>[
                     'asc' => ['date' => SORT_ASC],
                     'desc' => ['date' => SORT_DESC],
+                    'default' => SORT_ASC,
+                    'label'=>'Дате'
                 ],
                 'user_id'=>[
                     'asc' => ['user_id' => SORT_ASC],
                     'desc' => ['user_id' => SORT_DESC],
-                    'default' => SORT_DESC,
+                    
+                    'label'=>'Автору'
                 ],
             ],
         ]);
+        $query =Article::getAll()->orderBy($sort->orders);
+        $count = $query->count();
+        $pagination = new Pagination(['totalCount'=>$count,'pageSize'=>10]);
+        $articles=$query->offset($pagination->offset)->limit($pagination->limit)->all();
         $popular= Article::getPopular();
         $recent =Article::getRecent();
         $categories=Category::getAll();
-        $query =Article::find()->where(['status'=>2])->orderBy($sort->orders);
-        $count = $query->count();
-        $pagination = new Pagination(['totalCount'=>$count]);
-        $articles=$query->offset($pagination->offset)->limit($pagination->limit)->all();
         $users=User::getAll();
         $popularcategories = Category::getPopularCategory();
         
@@ -320,35 +323,54 @@ class SiteController extends Controller
             'model' => $model,
         ]);} 
     }
+    public function actionRedact($id)
+    {
+        $model = new Article();
+        $article= Article::findOne($id);
+        if(Yii::$app->user->id==$article->user_id)
+        {if ($model->load(Yii::$app->request->post()) && $model->saveArticle()) {
+            return $this->redirect(['preview', 'id' => $model->id,
+            'article'=>$article,
+            ]);
+        }else{
+
+        return $this->render('redact', [
+            'model' => $model,
+            'article'=>$article,
+        ]);} }else{$this->redirect(['site/404']);}
+
+       
+        
+    }
     public function actionPreview($id)
     {
         $article= Article::findOne($id);
-        $popular= Article::getPopular();
-        $recent =Article::getRecent();
-        $categories=Category::getAll();
-        $comments=$article->getArticleComments();
-        $commentForm = new CommentForm();
-        $article->viewedCounter();
-        // $tags=Tag::getAll();
-        // $tag= Tag::findOne($id);
-        // $selectedTags = $article->getSelectedTags();
-        $users=User::getAll();
-        $popularcategories = Category::getPopularCategory();
+        if 
+        (Yii::$app->user->id==$article->user_id)
+            {$popular= Article::getPopular();
+            $recent =Article::getRecent();
+            $categories=Category::getAll();
+            // $tags=Tag::getAll();
+            // $tag= Tag::findOne($id);
+            // $selectedTags = $article->getSelectedTags();
+            $users=User::getAll();
+            $popularcategories = Category::getPopularCategory();
                 
-        return $this->render('preview',[
-            'article'=>$article,
-            'popular'=>$popular,
-            'recent'=>$recent,
-            'categories'=>$categories,
-            'comments'=>$comments,
-            'commentForm'=>$commentForm,
-            // 'tags'=>$tags,
-            'model' => $this->findModel($id),
-            // 'tag'=>$tag,
-            // 'selectedTags'=>$selectedTags,
-            'users'=>$users,
-        'popularcategories'=>$popularcategories,
-        ]);
+                return $this->render('preview',[
+                'article'=>$article,
+                'popular'=>$popular,
+                'recent'=>$recent,
+                'categories'=>$categories,
+                // 'tags'=>$tags,
+                'model' => $this->findModel($id),
+                // 'tag'=>$tag,
+                // 'selectedTags'=>$selectedTags,
+                'users'=>$users,
+                'popularcategories'=>$popularcategories,
+                ]);}
+        else{
+            $this->redirect(['site/404']);
+        }
     }
     protected function findModel($id)
     {
@@ -440,11 +462,13 @@ public function actionDelete($id)
                 'date'=>[
                     'asc' => ['date' => SORT_ASC],
                     'desc' => ['date' => SORT_DESC],
+                    'label'=>'Дате'
                 ],
                 'user_id'=>[
                     'asc' => ['user_id' => SORT_ASC],
                     'desc' => ['user_id' => SORT_DESC],
                     'default' => SORT_DESC,
+                    'label'=>'Автору'
                 ],
             ],
         ]);
@@ -454,10 +478,11 @@ public function actionDelete($id)
         // $tags=Tag::getAll();
         $users=User::getAll();
         $popularcategories = Category::getPopularCategory();
-        $query =Article::find()->where(['status'=>2])->orderBy($sort->orders);
+        $query = Article::find()->where(['user_id'=>Yii::$app->user->id])->orderBy($sort->orders);
         $count = $query->count();
         $pagination = new Pagination(['totalCount'=>$count]);
         $articles=$query->offset($pagination->offset)->limit($pagination->limit)->all();
+        
     
         
     
@@ -471,6 +496,8 @@ public function actionDelete($id)
         //  'tags'=>$tags,
         'users'=>$users,
         'popularcategories'=>$popularcategories,
+        'sort'=>$sort,
+        
     ]);
     }
     public function actionUser($id)

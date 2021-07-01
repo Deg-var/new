@@ -1521,7 +1521,7 @@ ol {
 
 .sidebar__feature__item__large {
     height: 100px;
-    min-width: 0%;
+    width: 100px;
     position: relative;
     margin-bottom: 30px;
 }
@@ -2271,6 +2271,8 @@ ol {
 
 .single-post__comment__item {
     margin-bottom: 10px;
+    box-shadow: 1px 1px 1px rgb(189, 189, 189);
+    background-color: rgb(253, 253, 253);
 }
 
 .single-post__comment__item.single-post__comment__item--reply {
@@ -3123,6 +3125,7 @@ ol {
     }
     .categories__item {
         height: 330px;
+        min-width: 100%;
     }
     .sidebar__item__follow__links a,
     .humberger__menu__about .humberger__menu__about__social a {

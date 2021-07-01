@@ -60,6 +60,7 @@ MyAsset::register($this);
                                 <li class=""><a href="/site/index">Главная</a></li>
                                 
                                 <li class=""><a href="/site/categories">Категории</a></li>
+                                <li class=""><a href="/site/users">Авторы</a></li>
                                 <!-- <li class=""><a href="/site/tags">Теги</a></li> -->
                                 <li class=""><a href="/site/about">О нас</a></li>
                                 <li class=""><a href="/site/contact">Контакты</a></li>

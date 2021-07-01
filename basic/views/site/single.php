@@ -7,7 +7,7 @@ use yii\widgets\ActiveForm;
 use app\models\Comment;
 use phpDocumentor\Reflection\Location;
 
-?><?php if ($article->status===2):?>
+?>
 <section class="categories categories-grid spad container"><div class="row"><section class="single-post spad col-8">
         <div class="single-post__hero set-bg" data-setbg="<?= $article->getImage();?>"></div>
         <div class="container">
@@ -16,8 +16,13 @@ use phpDocumentor\Reflection\Location;
                     <div class="single-post__title">
                         <div class="single-post__title__text">
                             <ul class="label">
-                                <li><?php if ($article->category_id):?><a href="<?= Url::toRoute(['site/category','id'=>$article->category->title])?>">
-                                <?= $article->category->title;?></a><?php else:?>(без категории)<?php endif;?></li>
+                                <li>
+                                <?php if ($article->category_id):?>
+                                категория: <a href="<?= Url::toRoute(['site/category','id'=>$article->category->id])?>">
+                                <?= $article->category->title;?>
+                                </a>
+                                <?php else:?>(без категории)<?php endif;?>
+                                </li>
                                 
                             </ul>
                             <h4><?= $article->title;?></h4>
@@ -36,20 +41,25 @@ use phpDocumentor\Reflection\Location;
                         </div>
 <?php if(!empty($comments)):?>
     <?php foreach($comments as $comment):?>
-                        <div class="single-post__comment__item">
-                            <div class="single-post__comment__item__pic">
-                                <img src="<?= $comment->user->image?>" alt="">
-                            </div>
+    <?php if ($comment->user_id):?>
+                        <div class="single-post__comment__item container">
                             <div class="single-post__comment__item__text">
                                 <h5><?= $comment->user->name?></h5>
                                 <span><?= $comment->getDate()?></span>
-                                <p><?= $comment->text;?></p>
-                                <ul>
-                                    <li><a href="#"><i class="fa fa-heart-o"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-share-square-o"></i></a></li>
-                                </ul>
+                                <div class="text-break"><p><?= $comment->text;?></p></div>
+                                
                             </div>
                         </div>
+                        <?php else:?>
+                            <div class="single-post__comment__item container">
+                            <div class="single-post__comment__item__text">
+                                <h5>гость</h5>
+                                <span><?= $comment->getDate()?></span>
+                                <div class="text-break"><p><?= $comment->text;?></p></div>
+                                
+                            </div>
+                        </div>
+                        <?php endif;?>
 <?php endforeach;?>
 <?php endif;?>
                     </div>
@@ -73,6 +83,3 @@ use phpDocumentor\Reflection\Location;
             // 'tags'=>$tags,
             ])?>
             </section>
-            <?php else:?>
-            <?php header('Location:/site/404');die;?>
-            <?php endif;?>

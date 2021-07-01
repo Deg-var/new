@@ -15,18 +15,25 @@ use yii\widgets\LinkPager;?>
                                     <?php foreach($articles as $article):?>
                                         <?php if ($article->status===2):?>
                                         <a href="<?= Url::toRoute(['site/view','id'=>$article->id]);?>" class="row">
-                                            <img class="sidebar__feature__item__large2 col-4"
-                                    src="<?= $article->getImage() ?>">
+                                            <img class="sidebar__feature__item__large2 col-4" src="<?= $article->getImage() ?>">
                                     
-                                <div class="sidebar__item__title row container-fuid col-8">
-                                        <div class="col-9"><h4><?= $article->title ?></h4>
-                                        <h5><?= $article->description ?></h5>
-                                        </div><h5 class="col-3  pull-bottom"><?= $article->getDate() ?>
-                                        
-                                    </div></a>
+                                            <div class="categories__hover__text col-7">
+                                            <h5><?= $article->title;?></h5>
+                                            <p>
+                                                <?php if ($article->category_id):?>
+                                                <p>Категория: <?= $article->category->title; ?></p>
+                                                <?php else:?>
+                                                (БЕЗ КАТЕГОРИИ)
+                                                <?php endif;?>
+                                            </p>
+                                            <div class="text-break"><?= $article->description?></div>
+                                            <div class="text-break">Автор: <?= $article->author->name; ?></div> 
+                                            <div class="text-break"><?= $article->getDate() ?></div>
+                                            <div class="text-break">Просмотры: <?= (int) $article->viewed ?></div>
+                                        </div></a>
                                     <?php endif;?>
                                     <?php endforeach;?>
-                                </div><<div class="row justify-content-center">
+                                </div><div class="row justify-content-center">
                 <?php echo LinkPager::widget([
     'pagination' => $pagination,
 ]);?></div>

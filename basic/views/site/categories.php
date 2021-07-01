@@ -32,7 +32,7 @@
             'recent'=>$recent,
             'categories'=>$categories,
             'popularcategories'=>$popularcategories,
-            'users'=>$user,
+            'users'=>$users,
             // 'tags'=>$tags,
             ])?>
                     </div>

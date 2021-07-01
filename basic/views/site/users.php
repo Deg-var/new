@@ -7,9 +7,10 @@
                     <div class="row">
                         <div class="col-lg-8 col-md-8">
                             <div class="breadcrumb__text">
-                                <h2>Все категории</h2>
+                                <h2>Все авторы</h2>
                             </div>
                             <?php foreach($users as $user):?>
+                            <?php if(!$user->getArticlesCount()==0):?>
                             <div class="categories__list__post__item">
                                 <div class="row">
                                     
@@ -28,6 +29,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <?php endif;?>
                           <?php endforeach;?>
                         </div>
                         <?= $this->render('/partials/sidebar',[

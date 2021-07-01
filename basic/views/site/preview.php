@@ -16,18 +16,17 @@ $this->params['breadcrumbs'][] = ['label' => 'Articles', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<?php if (Yii::$app->user->id==$article->user_id):?>
 <section class="categories categories-grid spad container">
 <div class="row">
 <section class="single-post spad col-8">
 <?php if (!$article->image):?>
         <div class="single-post__hero  h-10 text-center">
-            <?= Html::a('Загрузить изображение', ['set-image', 'id' => $model->id], ['class' => 'btn btn-secondary align-baseline']) ?>
+            <h4><?= Html::a('Загрузить изображение', ['set-image', 'id' => $model->id], ['class' => 'btn btn-primary align-baseline']) ?></h4>
         </div>
         <?php else :?>
             <div class="single-post__hero  h-10 text-center">
             <img class="single-post__hero set-bg" src="<?= $article->getImage();?>">
-            <?= Html::a('Изменить изображение', ['set-image', 'id' => $model->id], ['class' => 'btn btn-secondary align-baseline']) ?>
+            <h4><?= Html::a('Изменить изображение', ['set-image', 'id' => $model->id], ['class' => 'btn btn-secondary align-baseline']) ?></h4>
             </div>
             <?php endif;?>
         <div class="container">
@@ -60,13 +59,16 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                 
             </div>
-        </div><?php if ($article->status==1):?>
+        </div>
+        <?php if ($article->status==1):?>
             <h5>Эта статья-черновик</h5>
     <a class="btn btn-success" href="<?= Url::toRoute(['allow', 'id'=>$article->id]);?>">Публикуй</a>
+    <a class="btn btn-primary" href="<?= Url::toRoute(['redact', 'id'=>$article->id]);?>">Радектировать</a>
     <div class="btn btn-secondary">Черновик</div>
                 <?php else:?>
             <h5>Эта статья опубликована</h5>        
             <div class="btn btn-secondary">Публикуй</div>
+            <a class="btn btn-primary" href="<?= Url::toRoute(['redact', 'id'=>$article->id]);?>">Радектировать</a>
             <a class="btn btn-warning" href="<?= Url::toRoute(['disallow', 'id'=>$article->id]);?>">Черновик</a>
             <?php endif;?>
             <a class="btn btn-danger" href="<?= Url::toRoute(['delete', 'id'=>$article->id]);?>">Удоли</a>
@@ -79,7 +81,3 @@ $this->params['breadcrumbs'][] = $this->title;
             'users'=>$users,
             // 'tags'=>$tags,
             ])?></section>
-
-<?php else:?>
-    <?php header('Location:/site/404');die;?>
-<?php endif;?>

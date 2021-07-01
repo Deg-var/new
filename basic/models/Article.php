@@ -64,6 +64,10 @@ class Article extends \yii\db\ActiveRecord
             'category_id' => 'Category ID',
         ];
     }
+    public static function getAll()
+    {
+        return Article::find()->where(['status'=>2]);
+    }
 public function saveImage($filename){
     $this->image =$filename;
     return $this->save(false);
@@ -84,7 +88,7 @@ public function beforeDelete()
 }
 public function getCategory()
 {
-    return $this->hasOne(category::className(), ['id' => 'category_id']);
+    return $this->hasOne(Category::className(), ['id' => 'category_id']);
 }
 public function saveCategory($category_id)
 {
@@ -125,12 +129,15 @@ public static function getPopular()
 {
     return  Article::find()
     ->orderBy('viewed desc')
-    ->limit(3)
+    ->limit(4)
     ->all();
 }
 public static function getRecent()
 {
-    return Article::find()->orderBy('date desc')->limit(4)->all();
+    return Article::find()
+    ->orderBy('date desc')
+    ->limit(3)
+    ->all();
 }
 public function saveArticle()
 {
@@ -147,7 +154,7 @@ public function getArticleComments()
 }
 public function getAuthor()
 {
-    return $this->hasOne(user::className(),['id'=>'user_id']);
+    return $this->hasOne(User::className(),['id'=>'user_id']);
 }
 public function viewedCounter()
 {
@@ -156,12 +163,12 @@ public function viewedCounter()
 }
 public function allow()
 {
-    $this->status=self::STATUS_ALLOW;
+    $this->status=2;
     return $this->save(false);
 }
 public function disallow()
 {
-    $this->status=self::STATUS_DISALLOW;
+    $this->status=1;
     return $this->save(false);
 }
 public static function myArticles()
