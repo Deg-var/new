@@ -30,7 +30,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php foreach ($comments as $comment):?>
         <tr>
             <td><?= $comment->id?></td>
+            <?php if ($comment->user_id):?>
             <td><?= $comment->user->name?></td>
+            <?php else:?>
+            <td>Гость</td>
+            <?php endif;?>    
             <td><?= $comment->text?></td>
             <td><?= $comment->article_id?></td>
             <td>

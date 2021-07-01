@@ -60,7 +60,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 
             </div>
         </div>
-        <?php if ($article->status==1):?>
+        <?php if (!$article->status==2):?>
             <h5>Эта статья-черновик</h5>
     <a class="btn btn-success" href="<?= Url::toRoute(['allow', 'id'=>$article->id]);?>">Публикуй</a>
     <a class="btn btn-primary" href="<?= Url::toRoute(['redact', 'id'=>$article->id]);?>">Радектировать</a>

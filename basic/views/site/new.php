@@ -22,14 +22,16 @@ use app\modules\admin\controllers\ArticleController;
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6])->label('Краткое описание') ?>
 
-    <?= $form->field($model, 'content')->textarea(['rows' => 6])->label('Содержание') ?></h5><div class="article-form">
+    <?= $form->field($model, 'content')->textarea(['rows' => 6])->label('Содержание') ?></h5>
+    <div class="article-form">
     
     <div class="form-group">
-        <?= Html::submitButton('Спаси и сохрани', ['class' => 'btn btn-success','style'=>'font-size:20px;', 'href'=>'/site/preview']) ?>
+        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success','style'=>'font-size:20px;', 'href'=>'/site/preview']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
 
+</div>
 </div>
 
 

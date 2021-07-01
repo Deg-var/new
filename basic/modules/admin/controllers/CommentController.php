@@ -4,6 +4,7 @@ namespace app\modules\admin\controllers;
 use app\models\Article;
 use yii\web\Controller;
 use app\models\Comment;
+use app\models\User;
 
 class CommentController extends Controller
 {

@@ -9,7 +9,7 @@ use phpDocumentor\Reflection\Location;
 
 ?>
 <section class="categories categories-grid spad container"><div class="row"><section class="single-post spad col-8">
-        <div class="single-post__hero set-bg" data-setbg="<?= $article->getImage();?>"></div>
+        <img class="single-post__hero" src="<?= $article->getImage() ?>">
         <div class="container">
             <div class="row d-flex justify-content-center">
                 <div class="col-lg-8">
