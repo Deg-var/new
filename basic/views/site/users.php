@@ -16,7 +16,7 @@
                                     
                                     <div class="col-lg-12 col-md-12">
                                         <div class="categories__post__item__text">
-                                            <a href="<?= Url::toRoute(['site/category','id'=>$user->id]);?>">
+                                            <a href="<?= Url::toRoute(['site/user','id'=>$user->id]);?>">
                                             <span class="post__label">
                                             <?= $user->name ?>
                                             </span></a>

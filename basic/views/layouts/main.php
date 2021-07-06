@@ -170,12 +170,10 @@ MyAsset::register($this);
 
 <?php $this->endBody() ?>
 <?= $this->registerJsFile('/ckeditor/ckeditor.js');?>
-<?= $this->registerJsFile('/ckfinder/ckfinder.js');?>
 <script>
 $(document).ready(function(){
     var editor = CKEDITOR.replace('article-description');
     var editor = CKEDITOR.replace('article-content');
-    CKfinder.setupCKeditor(editor);
     })
 </script>
 </body>
